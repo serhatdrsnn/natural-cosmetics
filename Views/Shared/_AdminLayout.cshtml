@@ -1,0 +1,108 @@
+@using Microsoft.AspNetCore.Identity
+@using NaturalCosmeticsECommerce.Models
+@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@functions {
+    private async Task<string> GetUserRoleAsync()
+    {
+        if (SignInManager.IsSignedIn(User))
+        {
+            var currentUser = await UserManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
+                {
+                    return "admin";
+                }
+            }
+        }
+        return null;
+    }
+}
+
+@{
+    var name = await GetUserRoleAsync();
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Admin Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="@Url.Action("Dashboard", "Admin")">
+                <i class="fas fa-cogs me-1"></i> Admin Paneli
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
+                aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ManageOrder", "Admin")">
+                            <i class="fas fa-box"></i> Siparişler
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("List", "Product")">
+                            <i class="fas fa-leaf"></i> Ürünler
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("UserList", "Admin")">
+                            <i class="fas fa-users"></i> Kullanıcılar
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    @if (!string.IsNullOrEmpty(name))
+                    {
+                        <li class="nav-item me-2">
+                            <span class="navbar-text text-dark">
+                                <i class="fas fa-user-shield me-1 text-success"></i> Merhaba, @name
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link text-dark p-0" title="Çıkış Yap">
+                                    <i class="fas fa-sign-out-alt me-1 text-danger"></i> Çıkış Yap
+                                </button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <footer class="border-top text-center mt-5 py-3 text-muted">
+        <div class="container">
+            &copy; 2025 - NaturalCosmeticsECommerce Admin
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

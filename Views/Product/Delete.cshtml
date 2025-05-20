@@ -1,0 +1,23 @@
+@model NaturalCosmeticsECommerce.Models.Product
+
+@{
+    ViewData["Title"] = "Ürünü Sil";
+}
+
+<div class="card border-danger mb-4">
+    <div class="card-header bg-danger text-white">
+        <h3 class="card-title mb-0">Ürünü Sil: @Model.Name</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Açıklama:</strong> @Model.Description</p>
+        <p><strong>Fiyat:</strong> @Model.Price.ToString("C")</p>
+        <p><strong>Kategori:</strong> @Model.Category?.Name</p>
+    </div>
+    <div class="card-footer">
+        <form asp-action="Delete" asp-route-id="@Model.ProductId" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger">Evet, Sil</button>
+        </form> 
+        <a asp-action="List" class="btn btn-secondary ms-2">İptal</a>
+    </div>
+</div>

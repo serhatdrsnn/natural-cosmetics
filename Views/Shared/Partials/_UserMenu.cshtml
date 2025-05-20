@@ -1,0 +1,43 @@
+@using Microsoft.AspNetCore.Identity
+@using NaturalCosmeticsECommerce.Models
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    string name = null;
+    if (SignInManager.IsSignedIn(User))
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        name = string.IsNullOrEmpty(currentUser.FirstName) ? currentUser.UserName : currentUser.FirstName;
+    }
+}
+
+<ul class="navbar-nav align-items-center">
+    @if (!string.IsNullOrEmpty(name))
+    {
+        <li class="nav-item me-2">
+            <span class="navbar-text text-dark">
+                <i class="fas fa-user-circle me-1 text-success"></i> Merhaba, @name
+            </span>
+        </li>
+        <li class="nav-item">
+            <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                <button type="submit" class="btn btn-link nav-link text-dark p-0" title="Çıkış Yap">
+                    <i class="fas fa-sign-out-alt me-1 text-danger"></i> Çıkış Yap
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item me-2">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login" title="Giriş Yap">
+                <i class="fas fa-sign-in-alt me-1 text-success"></i> Giriş Yap
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register" title="Kayıt Ol">
+                <i class="fas fa-user-plus me-1 text-success"></i> Kayıt Ol
+            </a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,36 @@
+@model List<NaturalCosmeticsECommerce.Models.Favorite>
+
+@{
+    ViewData["Title"] = "My Favorites";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.Count == 0)
+{
+    <p>Favori ürününüz yok.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var favorite in Model)
+        {
+            <div class="col-md-3">
+                <div class="card mb-3">
+                    <img src="@favorite.Product.ImageUrl" class="card-img-top" />
+                    <div class="card-body">
+                        <h5 class="card-title">@favorite.Product.Name</h5>
+                        <p class="card-text">@favorite.Product.Price.ToString("C")</p>
+
+                        <form asp-controller="Favorite" asp-action="Remove" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@favorite.ProductId" />
+                            <button type="submit" class="btn btn-danger">Favorilerden kaldır</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

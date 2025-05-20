@@ -1,0 +1,58 @@
+@model NaturalCosmeticsECommerce.Models.Order
+
+@{
+    ViewData["Title"] = "Siparişi Tamamla";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="ConfirmOrder" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="mb-3">
+        <label asp-for="ShippingAddress" class="form-label">Teslimat Adresi</label>
+        <input asp-for="ShippingAddress" class="form-control" placeholder="Adresinizi girin" />
+        <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+    </div>
+
+    @if (Model.Items != null && Model.Items.Any())
+    {
+        <div class="mb-3">
+            <h4>Sipariş Özeti</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ürün</th>
+                        <th>Adet</th>
+                        <th>Birim Fiyat</th>
+                        <th>Toplam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Product?.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Product?.Price.ToString("C")</td>
+                            <td>@(item.Product?.Price * item.Quantity).ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <p><strong>Toplam Tutar: @Model.TotalAmount.ToString("C")</strong></p>
+        </div>
+    }
+    else
+    {
+        <p>Sepetinizde ürün bulunmamaktadır.</p>
+    }
+
+    <button type="submit" class="btn btn-success">Siparişi Onayla</button>
+    <a asp-controller="Cart" asp-action="Index" class="btn btn-secondary ms-2">Geri Dön</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

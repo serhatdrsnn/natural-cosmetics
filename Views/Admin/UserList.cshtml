@@ -1,0 +1,30 @@
+@model IEnumerable<NaturalCosmeticsECommerce.ViewModels.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+}
+
+<h2>Kullanıcılar</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>İsim</th>
+            <th>Soyisim</th>
+            <th>Roller</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.User.Email</td>
+                <td>@item.User.FirstName</td>
+                <td>@item.User.LastName</td>
+                <td>
+                    @string.Join(", ", item.Roles)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

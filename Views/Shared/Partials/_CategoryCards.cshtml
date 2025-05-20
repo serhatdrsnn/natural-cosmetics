@@ -1,0 +1,16 @@
+    <div class="row text-center justify-content-center  ">
+        @foreach (var category in Model)
+        {
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card category-card border-0 shadow-sm rounded-circle d-flex align-items-center justify-content-center mx-auto position-relative"
+                    style="height: 180px; width: 180px; margin: 0 auto; background-image: url('@(string.IsNullOrEmpty(category.ImageUrl) ? "/img/default.png" : category.ImageUrl)'); background-size: cover; background-position: center;">
+                    
+                    <a asp-controller="Product" asp-action="List" asp-route-categoryId="@category.CategoryId"
+                    class="stretched-link text-decoration-none position-absolute text-white text-center fw-bold"
+                    style="font-size: 1.2rem; background-color: rgba(0, 0, 0, 0.5); padding: 0.25rem 0.5rem; border-radius: 10px;">
+                        @category.Name
+                    </a>
+                </div>
+            </div>
+        }
+    </div>

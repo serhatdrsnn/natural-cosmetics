@@ -1,0 +1,8 @@
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.csproj.AssemblyReference.cache
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.AssemblyInfoInputs.cache
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.AssemblyInfo.cs
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.csproj.CoreCompileInputs.cache
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.RazorAssemblyInfo.cache
+C:\Users\Serhatdrsnn\Desktop\NaturalCosmeticsECommerce\obj\Debug\net8.0\NaturalCosmeticsECommerce.RazorAssemblyInfo.cs

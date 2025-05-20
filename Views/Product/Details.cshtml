@@ -1,0 +1,47 @@
+@model NaturalCosmeticsECommerce.Models.Product
+@{
+    ViewData["Title"] = "Ürün Detayı";
+}
+
+<h2 class="mb-3 text-success">@Model.Name</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/img/default.png" : Model.ImageUrl)"
+            class="img-fluid rounded" alt="@Model.Name" />
+    </div>
+    <div class="col-md-6">
+        <p><strong>Fiyat:</strong> @Model.Price.ToString("N2") ₺</p>
+        <p><strong>Açıklama:</strong> @Model.Description</p>
+        <p><strong>Stok:</strong> @Model.StockQuantity adet</p>
+        <p><strong>Kategori:</strong> @Model.Category?.Name</p>
+
+        <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.ProductId" class="btn btn-success mb-2">
+            <i class="fas fa-shopping-basket me-1"></i> Sepete Ekle
+        </a>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            var favoriteProductIds = ViewBag.FavoriteProductIds as List<int>;
+            bool isFavorite = favoriteProductIds != null && favoriteProductIds.Contains(Model.ProductId);
+            if (isFavorite)
+            {
+                <form asp-controller="Favorite" asp-action="Remove" method="post" class="d-inline">
+                    <input type="hidden" name="productId" value="@Model.ProductId" />
+                    <button type="submit" class="btn btn-outline-danger mb-2">
+                        <i class="fas fa-heart-broken me-1"></i> Favoriden Kaldır
+                    </button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Favorite" asp-action="Add" method="post" class="d-inline">
+                    <input type="hidden" name="productId" value="@Model.ProductId" />
+                    <button type="submit" class="btn btn-outline-primary mb-2">
+                        <i class="fas fa-heart me-1"></i> Favoriye Ekle
+                    </button>
+                </form>
+            }
+        }
+    </div>
+</div>

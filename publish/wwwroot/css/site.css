@@ -1,0 +1,152 @@
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 60px;
+  background-color: #fdfdfd;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.form-floating>.form-control-plaintext::placeholder,
+.form-floating>.form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating>.form-control-plaintext:focus::placeholder,
+.form-floating>.form-control:focus::placeholder {
+  text-align: start;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 6px 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.category-card {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.category-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.category-card .overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.category-card a {
+  color: white;
+  font-size: 1rem;
+}
+
+.product-card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.falling-leaf {
+  position: fixed;
+  top: -50px;
+  font-size: 24px;
+  color: green;
+  animation: fallDown 8s linear forwards;
+  z-index: 10;
+}
+
+@keyframes fallDown {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.navbar {
+  background: linear-gradient(90deg, #ffffff, #f8f9fa);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #198754 !important;
+}
+
+.navbar-nav .nav-link {
+  transition: color 0.3s, transform 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #198754 !important;
+  transform: scale(1.05);
+}
+
+.btn-logout {
+  border-color: #198754;
+  color: #198754;
+}
+
+.btn-logout:hover {
+  background-color: #198754;
+  color: #fff;
+}
+
+footer {
+  background-color: #f8f9fa;
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: #198754;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}

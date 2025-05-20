@@ -1,0 +1,57 @@
+﻿@{
+  ViewData["Title"] = "Anasayfa";
+}
+
+<div class="text-center mt-5">
+  <h1 class="display-4 animate__animated animate__fadeInDown">
+    <i class="fas fa-seedling text-success me-2"></i> NaturalCosmetics Ürünlerine Hoş Geldiniz
+  </h1>
+  <p class="lead animate__animated animate__fadeIn animate__delay-1s">
+    Cilt bakımından saç bakımına, tamamen doğal ürünlerle dolu koleksiyonumuza göz atın.
+  </p>
+  <a class="btn btn-success btn-lg mt-4 animate__animated animate__fadeInUp animate__delay-2s" asp-controller="Product"
+    asp-action="List">
+    <i class="fas fa-shopping-basket me-2"></i> Alışverişe Başla
+  </a>
+</div>
+
+@model IEnumerable<NaturalCosmeticsECommerce.Models.Category>
+
+<h2 class="text-center mt-5 mb-4 animate__animated animate__zoomIn">
+  <i class="fas fa-list-ul me-2 text-success"></i> Kategoriler
+</h2>
+@await Html.PartialAsync("~/Views/Shared/Partials/_CategoryCards.cshtml", Model)
+
+<div class="container py-5">
+  <h2 class="mb-4 text-center text-success animate__animated animate__zoomIn">
+    <i class="fas fa-star me-2"></i> En Yeni Ürünler
+  </h2>
+
+  <div class="row">
+    @foreach (var product in (List<NaturalCosmeticsECommerce.Models.Product>)ViewBag.Products)
+    {
+      <div class="col-sm-6 col-md-4 col-lg-3 mb-4 animate__animated animate__fadeInLeft">
+        @await Html.PartialAsync("~/Views/Shared/Partials/_ProductCard.cshtml", product)
+
+      </div>
+    }
+
+  </div>
+</div>
+
+
+<div class="row mt-5 text-center">
+  <div class="col-md-4 animate__animated animate__fadeInUp">
+    <h4><i class="fas fa-truck me-2 text-info"></i> Ücretsiz Kargo</h4>
+    <p>150₺ üzeri siparişlerde ücretsiz gönderim!</p>
+  </div>
+  <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-1s">
+    <h4><i class="fas fa-leaf me-2 text-success"></i> Doğal İçerik</h4>
+    <p>Kimyasal içeriklerden uzak, tamamen doğal ürünler.</p>
+  </div>
+  <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-2s">
+    <h4><i class="fas fa-shield-alt me-2 text-warning"></i> Güvenli Ödeme</h4>
+    <p>SSL sertifikalı güvenli ödeme altyapısı.</p>
+  </div>
+</div>
+</div>

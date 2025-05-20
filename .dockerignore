@@ -1,0 +1,10 @@
+bin\
+obj\
+*.md
+*.user
+*.suo
+*.git
+*.vs
+.vscode
+Dockerfile
+.dockerignore

@@ -1,0 +1,70 @@
+@model NaturalCosmeticsECommerce.ViewModels.RegisterViewModel
+
+<h2 class="mb-4"><i class="fas fa-user-plus text-success me-2"></i>Kayıt Ol</h2>
+
+<form asp-action="Register" method="post" class="w-100" style="max-width: 600px;">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label">Adınız</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <input asp-for="FirstName" class="form-control" />
+        </div>
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label">Soyadınız</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <input asp-for="LastName" class="form-control" />
+        </div>
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label">Kullanıcı adınız</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+            <input asp-for="UserName" class="form-control" />
+        </div>
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">E-posta</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input asp-for="Email" class="form-control" />
+        </div>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">Şifre</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <input asp-for="Password" type="password" class="form-control" />
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ConfirmPassword" class="form-label">Şifreyi Onayla</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        </div>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">
+        <i class="fas fa-user-plus me-1 text-success "></i> Kayıt Ol
+    </button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
