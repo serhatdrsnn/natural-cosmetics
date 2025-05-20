@@ -1,29 +1,35 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
 using NaturalCosmeticsECommerce.Data;
 using NaturalCosmeticsECommerce.Models;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Web sunucusunu tüm IP'lerden dinle (Render gibi platformlar için)
+builder.WebHost.UseUrls("http://*:80");
+
+// Kültür ayarları (Türk Lirası vs.)
 var cultureInfo = new CultureInfo("tr-TR");
 cultureInfo.NumberFormat.CurrencySymbol = "₺";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-// Add services to the container.
+// View localization
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
-    
-// MySQL connection
+
+// MySQL bağlantısı
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 36)), // Update version to match your MySQL
+        new MySqlServerVersion(new Version(8, 0, 36)),
         mysqlOptions => mysqlOptions.EnableRetryOnFailure()
     ));
 
-// Identity services
+// Identity servisleri
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
@@ -38,7 +44,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Cookie settings
+// Cookie ayarları
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -47,7 +53,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-// Add session support if needed
+// Session
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -60,27 +66,14 @@ var app = builder.Build();
 var supportedCultures = new[] { cultureInfo };
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
-    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(cultureInfo),
+    DefaultRequestCulture = new RequestCulture(cultureInfo),
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 });
 
-// Seed roles and admin user
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        await SeedRolesAndAdminAsync(services);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
-    }
-}
+// Rol ve admin kullanıcıyı oluştur (await ile, async çağrı)
+await SeedRolesAndAdminAsync(app.Services);
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -99,26 +92,31 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession(); // If using sessions
+app.UseSession();
 
+// Area routing
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+// Varsayılan routing
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
 app.Run();
 
+
+// Async rol ve admin oluşturma fonksiyonu
 async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
 {
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+    using var scope = serviceProvider.CreateScope();
+    var services = scope.ServiceProvider;
 
-    // Create roles
-    string[] roleNames = { "Admin", "User"};
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+
+    string[] roleNames = { "Admin", "User" };
     foreach (var roleName in roleNames)
     {
         if (!await roleManager.RoleExistsAsync(roleName))
@@ -127,7 +125,6 @@ async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
         }
     }
 
-    // Create admin user
     var adminEmail = "admin@site.com";
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
@@ -149,7 +146,6 @@ async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
         }
     }
 
-    // Assign admin role
     if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
     {
         await userManager.AddToRoleAsync(adminUser, "Admin");
